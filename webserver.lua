@@ -18,7 +18,7 @@ local function log(message)
         return
     end
     local timestamp = os.date("%Y-%m-%d %H:%M:%S")
-    log_file:write(string.format("%s - %s\n", timestamp,  message))
+    log_file:write(string.format("%s - %s\n", timestamp, message))
     log_file:close()
 end
 
@@ -43,16 +43,33 @@ local function get_content_type(file_path)
     end
 end
 
+--- Sanitize Path
+---@param path string
+---@return string
+local function sanitize_path(path)
+    local sanitized = path:gsub("%.%.", ""):gsub("//", "/")
+    return sanitized
+end
+
+--- Send Response
+---@param client table
+---@param status string
+---@param content_type string
+---@param body string
+local function send_response(client, status, content_type, body)
+    client:send("HTTP/1.1 " .. status .. "\r\n")
+    client:send("Content-Type: " .. content_type .. "\r\n")
+    client:send("Connection: close\r\n\r\n")
+    client:send(body)
+end
+
 --- serve a file
 ---@param client table
 ---@param file_path string
 local function serve_file(client, file_path)
     local file = io.open(file_path, "rb")
     if not file then
-        client:send("HTTP/1.1 404 Not Found\r\n")
-        client:send("Content-Type: text/plain\r\n")
-        client:send("Connection: close\r\n\r\n")
-        client:send("404 Not Found")
+        send_response(client, "404 Not Found", "text/plain", "404 Not Found")
         log("File not found: " .. file_path)
         return
     end
@@ -61,25 +78,16 @@ local function serve_file(client, file_path)
     file:close()
 
     local content_type = get_content_type(file_path)
-    client:send("HTTP/1.1 200 OK\r\n")
-    client:send("Content-Type: " .. content_type .. "\r\n")
-    client:send("Connection: close\r\n\r\n")
-    client:send(content)
+    send_response(client, "200 OK", content_type, content)
     log("Served file: " .. file_path)
 end
 
 -- Loop forever waiting for clients
 while true do
-    -- Wait for a connection from any client
     local client = server:accept()
-
-    -- Make sure we don't block waiting for this client's line
     client:settimeout(10)
-
-    -- Receive the request line
     local request, err = client:receive()
 
-    -- If there was no error, process the request
     if not err then
         local method, path = request:match("^(%w+)%s(/[%w%._%/-]*)%sHTTP")
         if method and path then
@@ -89,21 +97,18 @@ while true do
             if path == "/" then
                 path = "/index.html"
             end
+            path = sanitize_path(path)
 
             -- Serve the requested file from the "static" directory
             local file_path = "static" .. path
             serve_file(client, file_path)
         else
-            client:send("HTTP/1.1 400 Bad Request\r\n")
-            client:send("Content-Type: text/plain\r\n")
-            client:send("Connection: close\r\n\r\n")
-            client:send("400 Bad Request")
+            send_response(client, "400 Bad Request", "text/plain", "400 Bad Request")
             log("Bad request: " .. (request or "nil"))
         end
     else
         log("Error receiving request: " .. (err or "unknown"))
     end
 
-    -- Done with client, close the object
     client:close()
 end
