@@ -1,4 +1,5 @@
 local socket = require("socket")
+local log = require("log")
 
 -- Create a TCP socket and bind it to the local host, at any port
 local server = assert(socket.bind("localhost", 8080))
@@ -8,19 +9,6 @@ local ip, port = server:getsockname()
 
 -- Print a message informing what's up
 print("Please connect to http://" .. ip .. ":" .. port .. "/")
-
--- Logging function
----@param message string
-local function log(message)
-    local log_file, err = io.open("log.txt", "a")
-    if not log_file then
-        print("Error opening log file: " .. err)
-        return
-    end
-    local timestamp = os.date("%Y-%m-%d %H:%M:%S")
-    log_file:write(string.format("%s - %s\n", timestamp, message))
-    log_file:close()
-end
 
 --- MIME types
 ---@param file_path string
@@ -70,7 +58,7 @@ local function serve_file(client, file_path)
     local file = io.open(file_path, "rb")
     if not file then
         send_response(client, "404 Not Found", "text/plain", "404 Not Found")
-        log("File not found: " .. file_path)
+        log.error("File not found: " .. file_path)
         return
     end
 
@@ -79,7 +67,7 @@ local function serve_file(client, file_path)
 
     local content_type = get_content_type(file_path)
     send_response(client, "200 OK", content_type, content)
-    log("Served file: " .. file_path)
+    log.info("Served file: " .. file_path)
 end
 
 -- Loop forever waiting for clients
@@ -91,7 +79,7 @@ while true do
     if not err then
         local method, path = request:match("^(%w+)%s(/[%w%._%/-]*)%sHTTP")
         if method and path then
-            log("Received request: " .. request)
+            log.info("Received request: " .. request)
 
             -- Default to serving index.html if the path is "/"
             if path == "/" then
@@ -104,10 +92,10 @@ while true do
             serve_file(client, file_path)
         else
             send_response(client, "400 Bad Request", "text/plain", "400 Bad Request")
-            log("Bad request: " .. (request or "nil"))
+            log.error("Bad request: " .. (request or "nil"))
         end
     else
-        log("Error receiving request: " .. (err or "unknown"))
+        log.error("Error receiving request: " .. (err or "unknown"))
     end
 
     client:close()
