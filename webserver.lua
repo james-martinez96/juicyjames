@@ -1,8 +1,10 @@
-local socket = require("socket")
 local log = require("log")
+local socket = require("socket")
 
 -- Create a TCP socket and bind it to the local host, at any port
-local server = assert(socket.bind("localhost", 8080))
+local server = socket.tcp()
+server:bind("localhost", 8080)
+server:listen()
 
 -- Find out which port the OS chose for us
 local ip, port = server:getsockname()
