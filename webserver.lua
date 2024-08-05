@@ -3,7 +3,7 @@ local socket = require("socket")
 
 -- Create a TCP socket and bind it to the local host, at any port
 local server = socket.tcp()
-server:bind("localhost", 8080)
+server:bind("localhost", 3000)
 server:listen()
 
 -- Find out which port the OS chose for us
