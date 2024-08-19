@@ -48,8 +48,8 @@ function handleRequest(client, request) {
     const requestLine = request.split('\n')[0];
     const [method, requestPath] = requestLine.split(' ');
 
-    const  clientIP = client.remoteAddress;
-    logger.info(`Received request  from IP: ${ clientIP }`)
+    const clientIP = client.remoteAddress;
+    logger.info(`Received request  from IP: ${clientIP}`)
 
     logger.info('Received request: ' + requestLine);
 
