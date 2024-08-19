@@ -1,30 +1,30 @@
 const http = require('http'); // or 'https' if your server uses SSL
 
 const options = {
-  hostname: 'localhost', // Replace with your server's hostname
-  port: 3000,            // Replace with your server's port
-  path: '/',             // Replace with the path you want to test
-  method: 'GET',         // Or 'POST', 'PUT', etc. depending on your use case
+    hostname: 'localhost', // Replace with your server's hostname
+    port: 3000,            // Replace with your server's port
+    path: '/',             // Replace with the path you want to test
+    method: 'GET',         // Or 'POST', 'PUT', etc. depending on your use case
 };
 
 const makeRequest = () => {
-  const req = http.request(options, (res) => {
+    const req = http.request(options, (res) => {
     // Collect response data
-    let data = '';
-    res.on('data', (chunk) => {
-      data += chunk;
+        let data = '';
+        res.on('data', (chunk) => {
+            data += chunk;
+        });
+
+        res.on('end', () => {
+            console.log(`Response: ${res.statusCode} - ${data}`);
+        });
     });
 
-    res.on('end', () => {
-      console.log(`Response: ${res.statusCode} - ${data}`);
+    req.on('error', (e) => {
+        console.error(`Problem with request: ${e.message}`);
     });
-  });
 
-  req.on('error', (e) => {
-    console.error(`Problem with request: ${e.message}`);
-  });
-
-  req.end();
+    req.end();
 };
 
 // Number of concurrent requests
@@ -35,5 +35,5 @@ const interval = 10;
 
 // Stress testing loop
 for (let i = 0; i < numRequests; i++) {
-  setTimeout(makeRequest, i * interval);
+    setTimeout(makeRequest, i * interval);
 }

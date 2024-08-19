@@ -1,9 +1,9 @@
-import "./index.html"
-import './styles.css'
-import { createHeader } from './header.js';
-import { createNav } from './nav.js';
-import { contentLoader } from './content.js';
-import { createFooter } from './footer.js';
+import "./index.html";
+import './styles.css';
+import {createHeader} from './header.js';
+import {createNav} from './nav.js';
+import {contentLoader} from './content.js';
+import {createFooter} from './footer.js';
 
 // window.addEventListener('hashchange', function() {
 //     const page = window.location.hash.substring(1);

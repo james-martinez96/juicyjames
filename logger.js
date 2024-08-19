@@ -1,5 +1,9 @@
 import {appendFile} from 'fs';
-import {join} from 'path';
+import {join, resolve, dirname} from 'path';
+import {fileURLToPath} from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const logLevels = {
     DEBUG: 'DEBUG',
@@ -8,7 +12,7 @@ const logLevels = {
     ERROR: 'ERROR',
 };
 
-let logFilePath = join(__dirname, 'log/server.log');
+let logFilePath = resolve(join(__dirname, 'log/server.log'));
 
 // Helper function to write logs to the log file
 function writeLog(level, msg) {

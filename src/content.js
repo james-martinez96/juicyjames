@@ -3,9 +3,9 @@ export function contentLoader(page) {
     main.innerHTML = ''; // Clear existing content
 
     const sections = {
-        home: { title: 'Home', content: 'Welcome to the home page!' },
-        about: { title: 'About', content: 'Learn more about us on this page.' },
-        stuff: { title: 'Stuff', content: 'This is more stuff' }
+        home: {title: 'Home', content: 'Welcome to the home page!'},
+        about: {title: 'About', content: 'Learn more about us on this page.'},
+        stuff: {title: 'Stuff', content: 'This is more stuff'}
     };
 
     if (sections[page]) {

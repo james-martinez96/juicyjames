@@ -1,7 +1,12 @@
 import {createServer} from 'net';
 import {readFile} from 'fs';
 import {extname, join} from 'path';
-import {error, info} from './logger';
+import {resolve, dirname} from 'path';
+import {fileURLToPath} from 'url';
+import logger from './logger.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 function getContentType(filePath) {
     const ext = extname(filePath).toLowerCase();
@@ -34,11 +39,11 @@ function serveFile(client, filePath) {
     readFile(filePath, (err, data) => {
         if (err) {
             sendResponse(client, '404 Not Found', 'text/plain', '404 Not Found');
-            error('File not found: ' + filePath);
+            logger.error('File not found: ' + filePath);
         } else {
             const contentType = getContentType(filePath);
             sendResponse(client, '200 OK', contentType, data);
-            info('Served file: ' + filePath);
+            logger.info('Served file: ' + filePath);
         }
     });
 }
@@ -49,26 +54,26 @@ function handleRequest(client, request) {
     const [method, requestPath] = requestLine.split(' ');
 
     const clientIP = client.remoteAddress;
-    info(`Received request  from IP: ${clientIP}`);
+    logger.info(`Received request  from IP: ${clientIP}`);
 
-    info('Received request: ' + requestLine);
+    logger.info('Received request: ' + requestLine);
 
     if (method === 'GET') {
         let filePath = requestPath === '/' ? '/index.html' : sanitizePath(requestPath);
-        filePath = join(__dirname, 'static', filePath);
+        filePath = resolve(join(__dirname, 'static', filePath));
 
         serveFile(client, filePath);
     } else {
         sendResponse(client, '400 Bad Request', 'text/plain', '400 Bad Request');
-        error('Bad request: ' + requestLine);
+        logger.error('Bad request: ' + requestLine);
     }
 
     const [seconds, nanoseconds] = process.hrtime(start); // Calculate the duration
     const durationInMs = (seconds * 1e3) + (nanoseconds / 1e6); // Convert to milliseconds
 
-    info(`Request processed in ${durationInMs.toFixed(3)} ms`);
+    logger.info(`Request processed in ${durationInMs.toFixed(3)} ms`);
     // const memoryUsage = process.memoryUsage();
-    // logger.info(`Memory usage: ${JSON.stringify(memoryUsage)}`);
+    // logger.logger.info(`Memory usage: ${JSON.stringify(memoryUsage)}`);
 }
 
 const server = createServer((client) => {
@@ -79,11 +84,11 @@ const server = createServer((client) => {
     });
 
     client.on('error', (err) => {
-        error('Client error: ' + err.message);
+        logger.error('Client error: ' + err.message);
     });
 
     client.on('end', () => {
-        info('Client disconnected');
+        logger.info('Client disconnected');
     });
 });
 

@@ -1,4 +1,4 @@
-import { contentLoader } from "./content";
+import {contentLoader} from "./content.js";
 
 // Load content based on the hash
 function navigateTo(page) {

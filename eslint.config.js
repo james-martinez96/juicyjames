@@ -1,11 +1,11 @@
 export default [
     {
-        files: ["**/*.js"], // Adjust to match your files
+        files: ["**/*.js"],
+        ignores: ["static/"],
         languageOptions: {
-            ecmaVersion: "latest", // Set the ECMAScript version
-            sourceType: "module",  // Common values are "module" or "script"
+            ecmaVersion: "latest",
+            sourceType: "module",
             globals: {
-                // Define global variables here
                 window: "readonly",
                 document: "readonly",
             },
