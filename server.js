@@ -44,8 +44,12 @@ function serveFile(client, filePath) {
 }
 
 function handleRequest(client, request) {
+    const start = process.hrtime(); // Start time
     const requestLine = request.split('\n')[0];
     const [method, requestPath] = requestLine.split(' ');
+
+    const  clientIP = client.remoteAddress;
+    logger.info(`Received request  from IP: ${ clientIP }`)
 
     logger.info('Received request: ' + requestLine);
 
@@ -58,6 +62,13 @@ function handleRequest(client, request) {
         sendResponse(client, '400 Bad Request', 'text/plain', '400 Bad Request');
         logger.error('Bad request: ' + requestLine);
     }
+
+    const [seconds, nanoseconds] = process.hrtime(start); // Calculate the duration
+    const durationInMs = (seconds * 1e3) + (nanoseconds / 1e6); // Convert to milliseconds
+
+    logger.info(`Request processed in ${durationInMs.toFixed(3)} ms`);
+    // const memoryUsage = process.memoryUsage();
+    // logger.info(`Memory usage: ${JSON.stringify(memoryUsage)}`);
 }
 
 const server = net.createServer((client) => {
