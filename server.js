@@ -1,19 +1,19 @@
-const net = require('net');
-const fs = require('fs');
-const path = require('path');
-const logger = require('./logger')
+import {createServer} from 'net';
+import {readFile} from 'fs';
+import {extname, join} from 'path';
+import {error, info} from './logger';
 
 function getContentType(filePath) {
-    const ext = path.extname(filePath).toLowerCase();
+    const ext = extname(filePath).toLowerCase();
     switch (ext) {
-        case '.html': return 'text/html';
-        case '.js': return 'application/javascript';
-        case '.css': return 'text/css';
-        case '.png': return 'image/png';
-        case '.jpg': return 'image/jpg';
-        case '.jpeg': return 'image/jpeg';
-        case '.gif': return 'image/gif';
-        default: return 'application/octet-stream';
+    case '.html': return 'text/html';
+    case '.js': return 'application/javascript';
+    case '.css': return 'text/css';
+    case '.png': return 'image/png';
+    case '.jpg': return 'image/jpg';
+    case '.jpeg': return 'image/jpeg';
+    case '.gif': return 'image/gif';
+    default: return 'application/octet-stream';
     }
 }
 
@@ -31,14 +31,14 @@ function sendResponse(client, status, contentType, body) {
 }
 
 function serveFile(client, filePath) {
-    fs.readFile(filePath, (err, data) => {
+    readFile(filePath, (err, data) => {
         if (err) {
             sendResponse(client, '404 Not Found', 'text/plain', '404 Not Found');
-            logger.error('File not found: ' + filePath);
+            error('File not found: ' + filePath);
         } else {
             const contentType = getContentType(filePath);
             sendResponse(client, '200 OK', contentType, data);
-            logger.info('Served file: ' + filePath);
+            info('Served file: ' + filePath);
         }
     });
 }
@@ -49,29 +49,29 @@ function handleRequest(client, request) {
     const [method, requestPath] = requestLine.split(' ');
 
     const clientIP = client.remoteAddress;
-    logger.info(`Received request  from IP: ${clientIP}`)
+    info(`Received request  from IP: ${clientIP}`);
 
-    logger.info('Received request: ' + requestLine);
+    info('Received request: ' + requestLine);
 
     if (method === 'GET') {
         let filePath = requestPath === '/' ? '/index.html' : sanitizePath(requestPath);
-        filePath = path.join(__dirname, 'static', filePath);
+        filePath = join(__dirname, 'static', filePath);
 
         serveFile(client, filePath);
     } else {
         sendResponse(client, '400 Bad Request', 'text/plain', '400 Bad Request');
-        logger.error('Bad request: ' + requestLine);
+        error('Bad request: ' + requestLine);
     }
 
     const [seconds, nanoseconds] = process.hrtime(start); // Calculate the duration
     const durationInMs = (seconds * 1e3) + (nanoseconds / 1e6); // Convert to milliseconds
 
-    logger.info(`Request processed in ${durationInMs.toFixed(3)} ms`);
+    info(`Request processed in ${durationInMs.toFixed(3)} ms`);
     // const memoryUsage = process.memoryUsage();
     // logger.info(`Memory usage: ${JSON.stringify(memoryUsage)}`);
 }
 
-const server = net.createServer((client) => {
+const server = createServer((client) => {
     client.setTimeout(10000); // Set timeout to 10 seconds
 
     client.on('data', (data) => {
@@ -79,11 +79,11 @@ const server = net.createServer((client) => {
     });
 
     client.on('error', (err) => {
-        logger.error('Client error: ' + err.message);
+        error('Client error: ' + err.message);
     });
 
     client.on('end', () => {
-        logger.info('Client disconnected');
+        info('Client disconnected');
     });
 });
 
