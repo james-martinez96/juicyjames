@@ -1,3 +1,8 @@
+const githubLink = document.createElement('a');
+githubLink.href = 'https://github.com/james-martinez96';
+githubLink.target = '_blank';
+githubLink.textContent = 'Visit my GitHub';  // Add visible text
+
 export function contentLoader(page) {
     const main = document.querySelector('main');
     main.innerHTML = ''; // Clear existing content
@@ -5,7 +10,8 @@ export function contentLoader(page) {
     const sections = {
         home: {title: 'Home', content: 'Welcome to the home page!'},
         about: {title: 'About', content: 'Learn more about us on this page.'},
-        stuff: {title: 'Stuff', content: 'This is more stuff'}
+        stuff: {title: 'Stuff', content: 'This is more stuff'},
+        github: {title: 'GitHub', content: 'this is a link', link: githubLink},
     };
 
     if (sections[page]) {
@@ -21,6 +27,10 @@ export function contentLoader(page) {
         const p = document.createElement('p');
         p.textContent = sectionInfo.content;
         section.appendChild(p);
+
+        if (sectionInfo.link) {
+            section.appendChild(sectionInfo.link);
+        }
 
         main.appendChild(section);
     } else {

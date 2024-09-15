@@ -12,7 +12,7 @@ export function createNav() {
     const ul = document.createElement('ul');
     ul.setAttribute('role', 'navigation');
 
-    const navItems = ['Home', 'About', 'Stuff'];
+    const navItems = ['Home', 'About', 'Stuff', 'GitHub'];
     navItems.forEach(item => {
         const li = document.createElement('li');
         const a = document.createElement('a');
