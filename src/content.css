@@ -5,13 +5,14 @@
 
 /* Main Content Styles */
 main {
+    color: black;
     padding: 2rem;
 }
 
 section {
     margin: 2rem 0;
     padding: 2rem;
-    background: #fff;
+    background: white;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     border-radius: 5px;
     animation: fadeIn 2s;
