@@ -23,6 +23,7 @@ function getContentType(filePath) {
 }
 
 function sanitizePath(requestPath) {
+    // console.log("Request Path: " + requestPath);
     return requestPath.replace(/\.\./g, '').replace(/\/+/g, '/');
 }
 

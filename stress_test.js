@@ -1,15 +1,15 @@
-const http = require('http'); // or 'https' if your server uses SSL
+import {request} from 'http'; // or 'https' if your server uses SSL
 
 const options = {
     hostname: 'localhost', // Replace with your server's hostname
     port: 3000,            // Replace with your server's port
-    path: '/',             // Replace with the path you want to test
+    path: '/bundle.js',             // Replace with the path you want to test
     method: 'GET',         // Or 'POST', 'PUT', etc. depending on your use case
 };
 
 const makeRequest = () => {
-    const req = http.request(options, (res) => {
-    // Collect response data
+    const req = request(options, (res) => {
+        // Collect response data
         let data = '';
         res.on('data', (chunk) => {
             data += chunk;
