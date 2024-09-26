@@ -2,7 +2,7 @@ import "./index.html";
 import './styles.css';
 import {createHeader} from './header.js';
 import {createNav} from './nav.js';
-import {contentLoader} from './content.js';
+import {contentLoader} from './contentLoader.js';
 import {createFooter} from './footer.js';
 
 // window.addEventListener('hashchange', function() {
