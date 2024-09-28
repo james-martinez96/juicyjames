@@ -15,12 +15,14 @@ export function renderGitHub() {
     section.id = 'github';
 
     const h2 = document.createElement('h2');
+    h2.id = 'github-Header';
     h2.textContent = github.title;
     section.appendChild(h2);
 
     const p = document.createElement('p');
     p.textContent = github.content;
     section.appendChild(p);
+
     section.appendChild(github.link);
 
     main.appendChild(section);

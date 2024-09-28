@@ -11,11 +11,12 @@ export function renderStuff() {
     section.id = 'stuff';
 
     const h2 = document.createElement('h2');
-    h2.textContent = 'Stuff';
+    h2.id = 'stuff-header';
+    h2.textContent = stuff.title;
     section.appendChild(h2);
 
     const p = document.createElement('p');
-    p.textContent = 'This is more stuff.';
+    p.textContent = stuff.content;
     section.appendChild(p);
 
     main.appendChild(section);

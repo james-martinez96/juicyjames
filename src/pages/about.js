@@ -11,6 +11,7 @@ export function renderAbout() {
     section.id = 'about';
 
     const h2 = document.createElement('h2');
+    h2.id = 'about-header';
     h2.textContent = about.title;
     section.appendChild(h2);
 

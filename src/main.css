@@ -1,9 +1,39 @@
 /* General Styles */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: gray;
-    line-height: 1.6;
+@keyframes gradientAnimation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
+/* Main Content Styles */
+main {
+    color: black;
+    padding: 2rem;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(270deg, #ff7e5f, #feb47b);
+    background-size: 400% 400%;
+    animation: gradientAnimation 15s ease infinite;
+}
+
+/* section { */
+    /* margin: 2rem 0; */
+    /* padding: 2rem; */
+    /* background: white; */
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+    /* border-radius: 5px; */
+    /* position: relative; */
+    /* top: -100%; */
+    /* animation: slide-in 3s forwards; */
+    /* animation: fadeIn 2s; */
+    /* transition: width 2s; */
+/* } */
+
+/* section h2 { */
+/*     margin-top: 0; */
+/* } */
