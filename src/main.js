@@ -4,6 +4,7 @@ import {createHeader} from './header.js';
 import {createNav} from './nav.js';
 import {contentLoader} from './contentLoader.js';
 import {createFooter} from './footer.js';
+import {background} from "./background.js";
 
 // window.addEventListener('hashchange', function() {
 //     const page = window.location.hash.substring(1);
@@ -17,6 +18,7 @@ function initializePage() {
     const main = document.createElement('main');
     fragment.appendChild(main);
     fragment.appendChild(createFooter());
+    fragment.appendChild(background());
     document.body.appendChild(fragment);
 
     const initialPage = window.location.hash.substring(1) || 'home';
