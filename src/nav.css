@@ -1,11 +1,11 @@
 /* Navigation Bar Styles */
-nav {
+.nav {
     background: #444;
     color: #fff;
     padding: 0.5rem 0;
 }
 
-nav ul {
+.nav ul {
     display: flex;
     justify-content: center;
     list-style: none;
@@ -13,17 +13,17 @@ nav ul {
     margin: 0;
 }
 
-nav ul li {
+.nav ul li {
     margin: 0 1rem;
 }
 
-nav ul li a {
+.nav ul li a {
     color: #fff;
     text-decoration: none;
     padding: 0.5rem 1rem;
 }
 
-nav ul li a:hover {
+.nav ul li a:hover {
     background: #555;
     border-radius: 5px;
 }

@@ -1,3 +1,4 @@
+import {createElement} from "./utils/domUtils.js";
 import {contentLoader} from "./contentLoader.js";
 
 // Load content based on the hash
@@ -8,17 +9,16 @@ function navigateTo(page) {
 
 // Create and append a navigation bar
 export function createNav() {
-    const nav = document.createElement('nav');
-    const ul = document.createElement('ul');
-    ul.setAttribute('role', 'navigation');
+    const nav = createElement('nav', {class: 'nav'});
+    const ul = createElement('ul', {role: 'navigation'});
 
     const navItems = ['Home', 'About', 'Stuff', 'GitHub'];
     navItems.forEach(item => {
-        const li = document.createElement('li');
-        const a = document.createElement('a');
-        a.href = `#${item.toLowerCase()}`;
-        a.textContent = item;
-        a.setAttribute('role', 'menuitem');
+        const li = createElement('li', {});
+        const a = createElement('a', {
+            href: `#${item.toLowerCase()}`,
+            role: 'menuitem',
+        }, item);
         a.addEventListener('click', function(event) {
             event.preventDefault();
             navigateTo(item.toLowerCase());

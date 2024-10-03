@@ -1,5 +1,5 @@
 /* Footer Styles */
-footer {
+.footer {
     background: #333;
     color: #fff;
     text-align: center;
@@ -9,6 +9,6 @@ footer {
     width: 100%;
 }
 
-footer p {
+.footer p {
     margin: 0;
 }

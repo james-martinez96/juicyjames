@@ -1,4 +1,4 @@
-#stuff {
+.stuff {
     margin: 2rem 0;
     padding: 2rem;
     background: white;
@@ -8,6 +8,6 @@
     top: -100%;
 }
 
-#stuff-header {
+.stuff-header {
     margin-top: 0;
 }

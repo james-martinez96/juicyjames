@@ -1,3 +1,5 @@
+import {createElement} from "../utils/domUtils.js";
+
 const home = {
     title: 'Home',
     content: 'This website is made with Javascript and css.'
@@ -5,19 +7,15 @@ const home = {
 
 export function renderHome() {
     const main = document.querySelector('main');
-    main.innerHTML = '';
+    if (!main) return;  // Safety check if 'main' is not present
+    main.innerHTML = '';  // Clear the existing content
 
-    const section = document.createElement('section');
-    section.id = 'home';
+    const section = createElement('section', {class: 'home'});
 
-    const h2 = document.createElement('h2');
-    h2.id = ('home-header');
-    h2.textContent = home.title;
+    const h2 = createElement('h2', {class: 'home-header'}, home.title);
+    const p = createElement('p', {}, home.content);
+
     section.appendChild(h2);
-
-    const p = document.createElement('p');
-    p.textContent = home.content;
     section.appendChild(p);
-
     main.appendChild(section);
 }

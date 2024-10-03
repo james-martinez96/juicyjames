@@ -1,12 +1,12 @@
 /* Header Styles */
-header {
+.header {
     background: #333;
     color: #fff;
     padding: 1rem 0;
     text-align: center;
 }
 
-header h1 {
+.header h1 {
     margin: 0;
 }
 

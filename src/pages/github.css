@@ -1,5 +1,5 @@
 /* Styles for Github page*/
-#github {
+.github {
     margin: 2rem 0;
     padding: 2rem;
     background: white;
@@ -11,11 +11,11 @@
     animation: github-fade-in 2s;
 }
 
-#github-header {
+.github-header {
     margin-top: 0;
 }
 
-#neovim {
+.neovim {
     margin: 2rem 0;
     padding: 2rem;
     background: white;

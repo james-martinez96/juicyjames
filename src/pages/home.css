@@ -1,4 +1,4 @@
-#home{
+.home {
     margin: 2rem 0;
     padding: 2rem;
     background: white;
@@ -8,6 +8,6 @@
     top: -100%;
 }
 
-#home-header {
+.home-header {
     margin-top: 0;
 }

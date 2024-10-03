@@ -1,4 +1,4 @@
-#about {
+.about {
     margin: 2rem 0;
     padding: 2rem;
     background: white;
@@ -8,6 +8,6 @@
     top: -100%;
 }
 
-#about-header {
+.about-header {
     margin-top: 0;
 }

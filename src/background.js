@@ -1,12 +1,14 @@
-export function background() {
-    const background = document.createElement('div');
-    background.classList.add('background');
+import {createElement} from "./utils/domUtils.js";
 
-    const circlesUl = document.createElement('ul');
+export function background() {
+    const background = createElement('div', {class: 'background'});
+    // background.classList.add('background');
+
+    const circlesUl = createElement('ul', {class: 'circles'});
     circlesUl.classList.add('circles');
 
     for (let i = 0; i < 10; i++) {
-        const circlesLi = document.createElement('li');
+        const circlesLi = createElement('li', {class: 'circlesLi'});
         circlesUl.appendChild(circlesLi);
     }
     background.appendChild(circlesUl);
