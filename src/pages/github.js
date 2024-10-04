@@ -1,4 +1,5 @@
 import {createElement} from "../utils/domUtils.js";
+import {marked} from "marked";
 
 const githubLink = createElement('a', {
     href: 'https://github.com/james-martinez96',
@@ -6,7 +7,7 @@ const githubLink = createElement('a', {
 }, 'Visit my GitHub');
 
 const neovimLink = createElement('a', {
-    href:  'https://github.com/james-martinez96/nvim',
+    href: 'https://github.com/james-martinez96/nvim/tree/dev',
     target: '_blank',
     textContent: 'Github',
 }, 'Github');
@@ -23,49 +24,20 @@ const neovim = {
     link: neovimLink,
 };
 
-function renderMarkdown(markdown) {
-    // Convert headings (#)
-    let html = markdown.replace(/^# (.*$)/gim, '<h1>$1</h1>');
-    html = html.replace(/^## (.*$)/gim, '<h2>$1</h2>');
-    html = html.replace(/^### (.*$)/gim, '<h3>$1</h3>');
-
-    // Convert bold (**text**)
-    html = html.replace(/\*\*(.*?)\*\*/gim, '<strong>$1</strong>');
-
-    // Convert italics (*text*)
-    html = html.replace(/\*(.*?)\*/gim, '<em>$1</em>');
-
-    // Convert links ([text](url))
-    html = html.replace(/\[(.*?)\]\((.*?)\)/gim, '<a href="$2">$1</a>');
-
-    // Convert new lines to <br>
-    html = html.replace(/\n/gim, '<br>');
-
-    // Convert file structure (code block format with - )
-    html = html.replace(/^-\s(.*$)/gim, '<li>$1</li>');
-
-    // Convert warning callouts
-    html = html.replace(/>\s\[!WARNING\](.*$)/gim, '<div class="warning"><strong>Warning:</strong>$1</div>');
-
-    // Convert blockquotes
-    html = html.replace(/^>\s(.*$)/gim, '<blockquote>$1</blockquote>');
-
-    return html.trim();
-};
-
 async function fetchReadme() {
-    var markdownText = '';
-    try {
-        const response = await fetch('https://raw.githubusercontent.com/james-martinez96/nvim/refs/heads/dev/README.md');
-        if (!response.ok) {
-            throw new Error('response was not ok.');
+    var markdown = '';
+    if (!localStorage.getItem('README')) {
+        try {
+            const response = await fetch('https://raw.githubusercontent.com/james-martinez96/nvim/refs/heads/dev/README.md');
+            if (!response.ok) {
+                throw new Error('response was not ok.');
+            }
+            markdown = await response.text();
+        } catch (error) {
+            console.error('Error fetching README:', error);
         }
-        markdownText = await response.text();
-    } catch (error) {
-        console.error('Error fetching README:', error);
+        localStorage.setItem('README', markdown);
     }
-    localStorage.setItem('README', markdownText);
-    return markdownText;
 }
 
 function renderNeovim() {
@@ -87,7 +59,7 @@ function renderNeovim() {
 
     fetchReadme();
     const readme = localStorage.getItem('README');
-    const htmlMarkdown = renderMarkdown(readme);
+    const htmlMarkdown = marked(readme);
     markdown.innerHTML = htmlMarkdown;
 
     main.appendChild(section);
