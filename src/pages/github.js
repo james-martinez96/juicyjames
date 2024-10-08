@@ -33,36 +33,38 @@ async function fetchReadme() {
                 throw new Error('response was not ok.');
             }
             markdown = await response.text();
+            localStorage.setItem('README', markdown);
         } catch (error) {
             console.error('Error fetching README:', error);
         }
-        localStorage.setItem('README', markdown);
+    } else {
+        markdown = localStorage.getItem('README');
     }
 }
 
-function renderNeovim() {
+async function renderNeovim() {
     const main = document.querySelector('main');
 
-    const section = createElement('section', {class: 'neovim'});
+    const neovimCard = createElement('section', {class: 'neovim'});
 
     const h2 = createElement('h2', {class: 'neovim-header'}, neovim.title);
 
-    section.appendChild(h2);
+    neovimCard.appendChild(h2);
 
     const p = createElement('p', {}, neovim.content);
-    section.appendChild(p);
+    neovimCard.appendChild(p);
 
-    section.appendChild(neovimLink);
+    neovimCard.appendChild(neovimLink);
 
     const markdown = createElement('p', {class: 'markdown'});
-    section.appendChild(markdown);
+    neovimCard.appendChild(markdown);
 
-    fetchReadme();
+    await fetchReadme();
     const readme = localStorage.getItem('README');
     const htmlMarkdown = marked(readme);
     markdown.innerHTML = htmlMarkdown;
 
-    main.appendChild(section);
+    main.appendChild(neovimCard);
 }
 
 export function renderGitHub() {
@@ -80,11 +82,4 @@ export function renderGitHub() {
     section.appendChild(github.link);
     main.appendChild(section);
     renderNeovim();
-
-    // var iframe = document.createElement('iframe');
-    //
-    // iframe.src = 'http://localhost:3001/';
-    // iframe.title = 'Github Website';
-    // iframe.id = 'iframe';
-    // main.appendChild(iframe);
 }
