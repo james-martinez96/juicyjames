@@ -28,6 +28,7 @@
     "webpack-dev-server": "^5.0.4"
   },
   "dependencies": {
-    "marked": "^14.1.2"
+    "marked": "^14.1.2",
+    "tweakpane": "^4.0.4"
   }
 }
