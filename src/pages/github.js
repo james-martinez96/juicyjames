@@ -24,7 +24,7 @@ const neovim = {
     link: neovimLink,
 };
 
-async function fetchReadme() {
+async function fetchMarkdown() {
     var markdown = '';
     if (!localStorage.getItem('README')) {
         try {
@@ -59,7 +59,7 @@ async function renderNeovim() {
     const markdown = createElement('p', {class: 'markdown'});
     neovimCard.appendChild(markdown);
 
-    await fetchReadme();
+    await fetchMarkdown();
     const readme = localStorage.getItem('README');
     const htmlMarkdown = marked(readme);
     markdown.innerHTML = htmlMarkdown;
