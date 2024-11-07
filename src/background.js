@@ -36,9 +36,13 @@ export function background() {
             ctx.fillText(random(state.charset), i * state.size, v);
             p[i] = v >= h || v >= 10000 * Math.random() ? 0 : v + state.size;
         }
+
+        setTimeout(() => {
+            requestAnimationFrame(draw);
+        }, 1000 / state.fps);
     };
 
-    let interval = setInterval(draw, 1000 / state.fps);
+    requestAnimationFrame(draw);
 
     return background;
 }
