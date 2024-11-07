@@ -12,6 +12,9 @@ main {
 }
 
 body {
+    /* display: flex; */
+    /* flex-direction: column; */
+
     font-family: Arial, sans-serif;
     line-height: 1.6;
     margin: 0;
