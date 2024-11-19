@@ -1,7 +1,7 @@
 import {createElement} from "./utils/domUtils.js";
 import gsap from 'gsap';
 import * as THREE from 'three';
-import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
+// import {OrbitControls} from 'three/addons/controls/OrbitControls.js';
 // import * as dat from 'dat.gui';
 
 export function background() {
