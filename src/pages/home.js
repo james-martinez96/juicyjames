@@ -1,8 +1,8 @@
 import {createElement} from "../utils/domUtils.js";
 
 const home = {
-    title: 'Home',
-    content: 'This website is made with Javascript and css.'
+    title: 'Hi im James',
+    content: 'I\'m a fullstask developer.\n'
 };
 
 export function renderHome() {
