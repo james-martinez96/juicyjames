@@ -30,7 +30,6 @@
   "dependencies": {
     "gsap": "^3.12.5",
     "marked": "^14.1.2",
-    "three": "^0.170.0",
-    "tweakpane": "^4.0.4"
+    "three": "^0.170.0"
   }
 }
