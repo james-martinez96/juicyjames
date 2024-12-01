@@ -18,6 +18,7 @@ function getContentType(filePath) {
     case '.jpg': return 'image/jpg';
     case '.jpeg': return 'image/jpeg';
     case '.gif': return 'image/gif';
+    case 'gltf': return 'asset/resource';
     default: return 'application/octet-stream';
     }
 }
