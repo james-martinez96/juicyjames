@@ -33,7 +33,6 @@ export function loadGLTFModel(url, scene) {
                         components.meshes.push(child);
                     }
                     if (child.isLight) {
-                        // child.intensity *= 0.01;
                         components.lights.push(child);
                     }
                 });
