@@ -28,12 +28,12 @@ export function loadGLTFModel(url, scene) {
                 };
 
                 // Traverse the scene to categorize objects
-                gltf.scene.traverse((child) => {
-                    if (child.isMesh) {
-                        components.meshes.push(child);
+                gltf.scene.traverse((node) => {
+                    if (node.isMesh) {
+                        components.meshes.push(node);
                     }
-                    if (child.isLight) {
-                        components.lights.push(child);
+                    if (node.isLight) {
+                        components.lights.push(node);
                     }
                 });
 

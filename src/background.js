@@ -14,22 +14,27 @@ export function background() {
     camera.position.z = 25;
 
     renderer.setSize(background.clientWidth, background.clientHeight);
-    renderer.setPixelRatio(devicePixelRatio);
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Optional, improves shadow quality
+
     background.appendChild(renderer.domElement);
+
+    // const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    // scene.add(ambientLight);
 
     const controls = new OrbitControls(camera, renderer.domElement);
 
     // event listener for window resize
-    window.addEventListener('resize', function() {
+    function onWindowResize() {
         // console.log('resize')
-        var width = window.innerWidth;
-        var height = window.innerHeight;
+        var width = background.clientWidth;
+        var height = background.clientHeight;
         renderer.setSize(width, height);
         camera.aspect = width / height;
         camera.updateProjectionMatrix();
-    });
-
-    let frame = 0;
+    };
+    window.addEventListener('resize', onWindowResize);
 
     loadGLTFModel(model, scene)
         .then((components) => {
@@ -44,20 +49,33 @@ export function background() {
                 console.warn("No camera found in the GLTF model. Using default camera.");
             }
 
+            // Lights
             components.lights.forEach((light) => {
-                light.intensity *= 0.01;
+                if (light.type === 'PointLight') {
+                    light.intensity *= 0.01;
+                    light.castShadow = true;
+                    light.shadow.mapSize.width = 1024;
+                    light.shadow.mapSize.height = 1024;
+                    const lightHelper = new THREE.PointLightHelper(light);
+                    scene.add(lightHelper);
+                    console.log("light shadow map:", light.shadow.map); // shadow map is null?
+                    // light.shadow.bias = -0.001;
+                }
+            });
+
+            // Meshes
+            components.meshes.forEach((meshes) => {
+                if (meshes.name === 'Floor-col') {
+                    meshes.receiveShadow = true;
+                }
+                else {
+                    meshes.castShadow = true;
+                }
             });
         })
         .catch((error) => {
             console.error('Failed to load model:', error);
         });
-
-    //animation once per frame
-    function animate() {
-        requestAnimationFrame(animate);
-        renderer.render(scene, camera);
-        frame += 0.01;
-    }
 
     //mouse coordinates
     const mouse = {
@@ -65,14 +83,20 @@ export function background() {
         y: undefined
     };
 
-    animate();
-
     // mouse move listener
     addEventListener('mousemove', (e) => {
         mouse.x = (e.clientX / innerWidth) * 2 - 1;
         mouse.y = -(e.clientY / innerHeight) * 2 + 1;
         // console.log(mouse);
     });
+
+    //animation once per frame
+    function animate() {
+        requestAnimationFrame(animate);
+        renderer.render(scene, camera);
+    }
+
+    animate();
 
     return background;
 }
