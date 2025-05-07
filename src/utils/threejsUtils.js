@@ -1,5 +1,91 @@
+import * as THREE from 'three';
 import {GLTFLoader} from 'three/examples/jsm/loaders/GLTFLoader.js';
-import model from '../assets/models/level.glb';
+
+// Gizmos
+export class GizmoManager {
+    constructor(scene) {
+        this.scene = scene;
+        this.helpers = new Map(); // To store gizmo helpers with unique keys
+    }
+
+    /**
+     * Add a helper the scene and manage it.
+     * @param {string} key - Unique identifier for the helper.
+     * @param {THREE.Object3D} helper - The helper object to add.
+     */
+    addHelper(key, helper) {
+        if (this.helpers.has(key)) {
+            console.warn(`Helper with key '${key}' already exists.`);
+            return;
+        }
+        this.helpers.set(key, helper);
+        helper.visible = false;
+        this.scene.add(helper);
+    }
+
+    /**
+     * Remove a helper from the scene.
+     * @param {string} key - Unique identifier for the helper to remove.
+     */
+    removeHelper(key) {
+        const helper = this.helpers.get(key);
+        if (helper) {
+            this.scene.remove(helper);
+            this.helpers.delete(key);
+        } else {
+            console.warn(`Helper with key '${key}' does not exist.`);
+        }
+    }
+
+    /**
+     * Enable (make visible) a helper in the scene.
+     * @param {string} key - Unique identifier for the helper.
+     */
+    enableHelper(key) {
+        const helper = this.helpers.get(key);
+        if (helper) {
+            helper.visible = true;
+        } else {
+            console.warn(`Helper with key '${key}' does not exist.`);
+        }
+    }
+
+    /**
+     * Disable (make invisible) a helper in the scene.
+     * @param {string} key - Unique identifier for the helper.
+     */
+    disableHelper(key) {
+        const helper = this.helpers.get(key);
+        if (helper) {
+            helper.visible = false;
+        } else {
+            console.warn(`Helper with key '${key}' does not exist.`);
+        }
+    }
+
+    /**
+     * Toggle the helper in the scene.
+     * @param {string} key - unique identifier for the helper.
+     */
+    toggleHelper(key) {
+        const helper = this.helpers.get(key);
+        if (helper) {
+            helper.visible = !helper.visible;
+        } else {
+            console.warn(`Helper with key '${key}' does not exist.`);
+        }
+    }
+
+    // Add jsdoc
+    updateHelper(key, updateFn) {
+        const helper = this.helpers.get(key);
+        if (helper) {
+            updateFn(helper);
+        } else {
+            console.warn(`Helper with key '${key}' does not exist.`);
+        }
+    }
+}
 
 /**
  * A helper function to load GLTF models.
